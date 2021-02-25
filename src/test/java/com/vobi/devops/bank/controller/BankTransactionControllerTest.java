@@ -53,8 +53,11 @@ class BankTransactionControllerTest {
 
 		mvcResult = mockMvc
 				.perform(post("/api/v1/transactions/deposit")
-						.contentType("application/json").content(jsonDepositDTO))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.balance").value(85000.0)).andReturn();
+						.contentType("application/json")
+						.content(jsonDepositDTO))
+						.andExpect(status().isOk())
+						.andExpect(jsonPath("$.balance").value(85000.0))
+						.andReturn();
 
 		assertEquals("application/json", mvcResult.getResponse().getContentType());
 
@@ -71,7 +74,8 @@ class BankTransactionControllerTest {
 		String jsonWithdrawDTO = objectMapper.writeValueAsString(withdrawDTO);
 
 		mockMvc.perform(post("/api/v1/transactions/withdraw").contentType("application/json").content(jsonWithdrawDTO))
-				.andExpect(status().isOk()).andReturn();
+				.andExpect(status().isOk())
+				.andReturn();
 
 	}
 
