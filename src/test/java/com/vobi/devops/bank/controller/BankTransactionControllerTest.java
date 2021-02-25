@@ -1,5 +1,8 @@
 package com.vobi.devops.bank.controller;
 
+
+import org.springframework.http.HttpHeaders;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -15,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vobi.devops.bank.domain.UserApplication;
 import com.vobi.devops.bank.dto.DepositDTO;
 import com.vobi.devops.bank.dto.TransactionResultDTO;
 import com.vobi.devops.bank.dto.TransferDTO;
@@ -32,10 +36,33 @@ class BankTransactionControllerTest {
 
 	@MockBean
 	BankTransactionService bankTransactionService;
+	
+	
+	private String generateToken() throws Exception{
+		UserApplication userApplication=new UserApplication("admin","password");
+		String json=objectMapper.writeValueAsString(userApplication);
+	
+		
+	    MvcResult result = mockMvc.perform(post("/login")
+	    		.contentType("application/json")
+	            .content(json))
+	            .andExpect(status().isOk()).andReturn();
+
+	    String response = result.getResponse().getContentAsString();
+	    
+	    return response;
+	}
 
 	@Test
 	void debeRetornar200EnDeposit() throws Exception {
 		// Arrange
+		
+		String jwt=generateToken();
+		
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.add("username", username);
+//		headers.add("password", password);
+		
 		String accountId = "4640-0341-9387-5781";
 		String userEmail = "vondrusek1@wisc.edu";
 		Double amount = 15000.0;
