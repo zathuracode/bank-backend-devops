@@ -1,0 +1,39 @@
+package com.vobi.devops.bank.mapper;
+
+import com.vobi.devops.bank.domain.Transaction;
+import com.vobi.devops.bank.dto.TransactionDTO;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+import java.util.List;
+
+
+/**
+* @author Zathura Code Generator Version 9.0 http://zathuracode.org/
+* www.zathuracode.org
+*
+* Mapper Build with MapStruct https://mapstruct.org/
+* MapStruct is a code generator that greatly simplifies the
+* implementation of mappings between Java bean type
+* based on a convention over configuration approach.
+*/
+@Mapper
+public interface TransactionMapper {
+    @Mapping(source = "users.userEmail", target = "userEmail_Users")
+    @Mapping(source = "transactionType.trtyId", target = "trtyId_TransactionType")
+    @Mapping(source = "account.accoId", target = "accoId_Account")
+    public TransactionDTO transactionToTransactionDTO(Transaction transaction);
+
+    @Mapping(source = "userEmail_Users", target = "users.userEmail")
+    @Mapping(source = "trtyId_TransactionType", target = "transactionType.trtyId")
+    @Mapping(source = "accoId_Account", target = "account.accoId")
+    public Transaction transactionDTOToTransaction(
+        TransactionDTO transactionDTO);
+
+    public List<TransactionDTO> listTransactionToListTransactionDTO(
+        List<Transaction> transactions);
+
+    public List<Transaction> listTransactionDTOToListTransaction(
+        List<TransactionDTO> transactionDTOs);
+}
