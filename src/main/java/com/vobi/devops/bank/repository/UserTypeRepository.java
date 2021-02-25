@@ -1,16 +1,13 @@
 package com.vobi.devops.bank.repository;
 
-import com.vobi.devops.bank.domain.UserType;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.math.BigDecimal;
-
+import com.vobi.devops.bank.domain.UserType;
 
 /**
-* @author Zathura Code Generator Version 9.0 http://zathuracode.org/
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator Version 9.0 http://zathuracode.org/
+ *         www.zathuracode.org
+ *
+ */
 public interface UserTypeRepository extends JpaRepository<UserType, Integer> {
 }

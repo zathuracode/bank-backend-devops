@@ -22,7 +22,6 @@ import com.vobi.devops.bank.entityservice.TransactionService;
 import com.vobi.devops.bank.entityservice.TransactionTypeService;
 import com.vobi.devops.bank.entityservice.UsersService;
 import com.vobi.devops.bank.exception.ZMessManager;
-import com.vobi.devops.bank.exception.ZMessManager.FindingException;
 
 @Service
 @Scope("singleton")
@@ -60,7 +59,6 @@ public class BankTransactionServiceImpl implements BankTransactionService {
 		depositDTO = new DepositDTO("9999-9999-9999-9999", COSTO, transferDTO.getUserEmail());
 		deposit(depositDTO);
 
-		
 		Optional<TransactionType> transactionType3 = transactionTypeService.findById(3);
 		if (!transactionType3.isPresent()) {
 			throw (new ZMessManager()).new FindingException("tipo de transacción 3");
@@ -71,14 +69,14 @@ public class BankTransactionServiceImpl implements BankTransactionService {
 		if (!accountOptional.isPresent()) {
 			throw (new ZMessManager()).new FindingException("cuenta con id " + transferDTO.getAccoIdOrigin());
 		}
-		
+
 		Account account = accountOptional.get();
-		
+
 		Optional<Users> userOptional = userService.findById(transferDTO.getUserEmail());
 		if (!userOptional.isPresent()) {
 			throw (new ZMessManager()).new FindingException("Usuario con id " + transferDTO.getUserEmail());
 		}
-		
+
 		Users user = userOptional.get();
 
 		Transaction transaction = new Transaction();
@@ -91,8 +89,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
 
 		transactionService.save(transaction);
 
-		return new TransactionResultDTO(transaction.getTranId(),
-				withdrawResult.getBalance());
+		return new TransactionResultDTO(transaction.getTranId(), withdrawResult.getBalance());
 
 	}
 

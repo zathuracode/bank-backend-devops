@@ -1,10 +1,10 @@
-package  com.vobi.devops.bank.security;
+package com.vobi.devops.bank.security;
 
 /**
-* @author Zathura Code Generator Version 9.0 http://zathuracode.org/
-* www.zathuracode.org
-* 
-*/
+ * @author Zathura Code Generator Version 9.0 http://zathuracode.org/
+ *         www.zathuracode.org
+ * 
+ */
 public class Constants {
 
 	// Spring Security

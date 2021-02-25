@@ -14,12 +14,11 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
-* @author Zathura Code Generator Version 9.0 http://zathuracode.org/
-* www.zathuracode.org
-* 
-*/
+ * @author Zathura Code Generator Version 9.0 http://zathuracode.org/
+ *         www.zathuracode.org
+ * 
+ */
 public class Utilities {
 
 	public static boolean isNumeric(String word) {
@@ -35,8 +34,8 @@ public class Utilities {
 	/**
 	 * 
 	 * @param word
-	 * @return Expresion regular "(\\d){1,10}\\.(\\d){1,10}" (\\d)digito
-	 *         {1,10}de 1 a 10 caracteres \\. punto
+	 * @return Expresion regular "(\\d){1,10}\\.(\\d){1,10}" (\\d)digito {1,10}de 1
+	 *         a 10 caracteres \\. punto
 	 * 
 	 */
 	public static boolean isDecimal(String word) {
@@ -51,8 +50,8 @@ public class Utilities {
 		// return doubleValidator.isValid(word);
 	}
 
-	public static boolean checkNumberAndCheckWithPrecisionAndScale(
-			String fieldValue, Integer precision, Integer scale) {
+	public static boolean checkNumberAndCheckWithPrecisionAndScale(String fieldValue, Integer precision,
+			Integer scale) {
 		boolean ret = false;
 		if (fieldValue != null && precision != null && scale != null) {
 			if (fieldValue.contains("E") && scale != 0) {
@@ -75,13 +74,11 @@ public class Utilities {
 				if (!isNumeric(scaleTmp)) {
 					return false;
 				}
-				if ((precisionTmp.length() <= precision)
-						&& (scaleTmp.length() <= scale)) {
+				if ((precisionTmp.length() <= precision) && (scaleTmp.length() <= scale)) {
 					ret = true;
 				}
 			} else {
-				if (spitedFieldValue.length == 1 && precision != 0
-						&& scale == 0) {
+				if (spitedFieldValue.length == 1 && precision != 0 && scale == 0) {
 					String precisionTmp = spitedFieldValue[0];
 					if (!isNumeric(precisionTmp)) {
 						return false;
@@ -97,8 +94,7 @@ public class Utilities {
 		return ret;
 	}
 
-	public static boolean checkWordAndCheckWithlength(String word,
-			Integer length) {
+	public static boolean checkWordAndCheckWithlength(String word, Integer length) {
 		boolean ret = false;
 		if (word.length() <= length) {
 			ret = true;
@@ -116,8 +112,7 @@ public class Utilities {
 		return ret;
 	}
 
-	public static String formatDateWithoutTimeInAStringForBetweenWhere(
-			Date fecha) {
+	public static String formatDateWithoutTimeInAStringForBetweenWhere(Date fecha) {
 		int year = fecha.getYear() + 1900;
 		int month = fecha.getMonth() + 1;
 		int day = fecha.getDate();
@@ -136,9 +131,10 @@ public class Utilities {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Método para valida emails
+	 * 
 	 * @author Camilo Andrés Cifuentes Grass
 	 * @version 2018/01/17
 	 * @param sEmail el email a verificar
@@ -146,21 +142,20 @@ public class Utilities {
 	 */
 	public static boolean isValidEmail(String sEmail) {
 		boolean isValid = false;
-		
+
 		final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 		Pattern pat = Pattern.compile(EMAIL_PATTERN);
 		Matcher mat = pat.matcher(sEmail);
-		
-		if(pat.matcher(sEmail).matches()) {
+
+		if (pat.matcher(sEmail).matches()) {
 			isValid = true;
-        }else {
+		} else {
 			isValid = false;
-        }
+		}
 		return isValid;
 	}
-	
 
 	/**
 	 * 
@@ -170,8 +165,7 @@ public class Utilities {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean matchClasses(Object object, Object object2,
-			boolean privateFields) throws Exception {
+	public static boolean matchClasses(Object object, Object object2, boolean privateFields) throws Exception {
 
 		boolean couldPerformTask = false;
 		Object paramsObj[] = {};
@@ -219,8 +213,7 @@ public class Utilities {
 							if (tmpName.equals("get") && tmpName2.equals("get")) {
 
 								tmpInfo = tmpMethod.invoke(object, paramsObj);
-								tmpInfo2 = tmpMethod2
-										.invoke(object2, paramsObj);
+								tmpInfo2 = tmpMethod2.invoke(object2, paramsObj);
 
 								if (tmpInfo != null && tmpInfo2 != null) {
 									try {
@@ -243,8 +236,7 @@ public class Utilities {
 					}
 
 				} else {
-					throw new Exception(
-							"One of the the Classes has no \"get\" methods please check");
+					throw new Exception("One of the the Classes has no \"get\" methods please check");
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -277,8 +269,7 @@ public class Utilities {
 							}
 						}
 					} else {
-						throw new Exception(
-								"One of the the Classes has no fields methods please check");
+						throw new Exception("One of the the Classes has no fields methods please check");
 					}
 				}
 			} catch (IllegalAccessException ea) {
@@ -291,15 +282,14 @@ public class Utilities {
 		return couldPerformTask;
 	}
 
-	public String constructQuery(Object[] variables, Object[] variablesBetween,
-			Object[] variablesBetweenDates) throws Exception {
+	public String constructQuery(Object[] variables, Object[] variablesBetween, Object[] variablesBetweenDates)
+			throws Exception {
 		String where = new String();
 		String tempWhere = new String();
 
 		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {
-				if ((variables[i] != null) && (variables[i + 1] != null)
-						&& (variables[i + 2] != null)
+				if ((variables[i] != null) && (variables[i + 1] != null) && (variables[i + 2] != null)
 						&& (variables[i + 3] != null)) {
 					String variable = (String) variables[i];
 					Boolean booVariable = (Boolean) variables[i + 1];
@@ -307,15 +297,13 @@ public class Utilities {
 					String comparator = (String) variables[i + 3];
 
 					if (booVariable.booleanValue()) {
-						tempWhere = (tempWhere.length() == 0) ? ("(model."
-								+ variable + " " + comparator + " \'" + value + "\' )")
-								: (tempWhere + " AND (model." + variable + " "
-										+ comparator + " \'" + value + "\' )");
+						tempWhere = (tempWhere.length() == 0)
+								? ("(model." + variable + " " + comparator + " \'" + value + "\' )")
+								: (tempWhere + " AND (model." + variable + " " + comparator + " \'" + value + "\' )");
 					} else {
-						tempWhere = (tempWhere.length() == 0) ? ("(model."
-								+ variable + " " + comparator + " " + value + " )")
-								: (tempWhere + " AND (model." + variable + " "
-										+ comparator + " " + value + " )");
+						tempWhere = (tempWhere.length() == 0)
+								? ("(model." + variable + " " + comparator + " " + value + " )")
+								: (tempWhere + " AND (model." + variable + " " + comparator + " " + value + " )");
 					}
 				}
 
@@ -325,22 +313,19 @@ public class Utilities {
 
 		if (variablesBetween != null) {
 			for (int j = 0; j < variablesBetween.length; j++) {
-				if ((variablesBetween[j] != null)
-						&& (variablesBetween[j + 1] != null)
-						&& (variablesBetween[j + 2] != null)
-						&& (variablesBetween[j + 3] != null)
+				if ((variablesBetween[j] != null) && (variablesBetween[j + 1] != null)
+						&& (variablesBetween[j + 2] != null) && (variablesBetween[j + 3] != null)
 						&& (variablesBetween[j + 4] != null)) {
 					String variable = (String) variablesBetween[j];
 					Object value = variablesBetween[j + 1];
 					Object value2 = variablesBetween[j + 2];
 					String comparator1 = (String) variablesBetween[j + 3];
 					String comparator2 = (String) variablesBetween[j + 4];
-					tempWhere = (tempWhere.length() == 0) ? ("(" + value + " "
-							+ comparator1 + " " + variable + " and " + variable
-							+ " " + comparator2 + " " + value2 + " )")
-							: (tempWhere + " AND (" + value + " " + comparator1
-									+ " " + variable + " and " + variable + " "
-									+ comparator2 + " " + value2 + " )");
+					tempWhere = (tempWhere.length() == 0)
+							? ("(" + value + " " + comparator1 + " " + variable + " and " + variable + " " + comparator2
+									+ " " + value2 + " )")
+							: (tempWhere + " AND (" + value + " " + comparator1 + " " + variable + " and " + variable
+									+ " " + comparator2 + " " + value2 + " )");
 				}
 
 				j = j + 4;
@@ -349,8 +334,7 @@ public class Utilities {
 
 		if (variablesBetweenDates != null) {
 			for (int k = 0; k < variablesBetweenDates.length; k++) {
-				if ((variablesBetweenDates[k] != null)
-						&& (variablesBetweenDates[k + 1] != null)
+				if ((variablesBetweenDates[k] != null) && (variablesBetweenDates[k + 1] != null)
 						&& (variablesBetweenDates[k + 2] != null)) {
 					String variable = (String) variablesBetweenDates[k];
 					Object object1 = variablesBetweenDates[k + 1];
@@ -361,19 +345,16 @@ public class Utilities {
 					try {
 						Date date1 = (Date) object1;
 						Date date2 = (Date) object2;
-						value = Utilities
-								.formatDateWithoutTimeInAStringForBetweenWhere(date1);
-						value2 = Utilities
-								.formatDateWithoutTimeInAStringForBetweenWhere(date2);
+						value = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date1);
+						value2 = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date2);
 					} catch (Exception e) {
 						throw e;
 					}
 
-					tempWhere = (tempWhere.length() == 0) ? ("(model."
-							+ variable + " between \'" + value + "\' and \'"
-							+ value2 + "\')") : (tempWhere + " AND (model."
-							+ variable + " between \'" + value + "\' and \'"
-							+ value2 + "\')");
+					tempWhere = (tempWhere.length() == 0)
+							? ("(model." + variable + " between \'" + value + "\' and \'" + value2 + "\')")
+							: (tempWhere + " AND (model." + variable + " between \'" + value + "\' and \'" + value2
+									+ "\')");
 				}
 
 				k = k + 2;
@@ -388,7 +369,7 @@ public class Utilities {
 
 		return where;
 	}
-	
+
 	/**
 	 * @author Camilo Puente
 	 * @author Frank Edward Daza González
@@ -398,18 +379,17 @@ public class Utilities {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String errorComponentLogic(String lblName, Locale locale) throws Exception{
+	public static String errorComponentLogic(String lblName, Locale locale) throws Exception {
 		InputStream is = null;
 		is = Utilities.class.getResourceAsStream("/i18n/messages_" + locale.getLanguage() + ".properties");
-		
-		String exception="";
+
+		String exception = "";
 		Properties p = new Properties();
 		p.load(is);
 		exception = p.getProperty(lblName);
 		return exception;
 	}
-	
-	
+
 	/**
 	 * @author Johan Steve Bejarano Fiesco
 	 * @version 2018/06/05
@@ -419,29 +399,29 @@ public class Utilities {
 	 * @return {@code String }
 	 * @throws Exception
 	 */
-	public static String errorComponentLogic(String lblName, Locale locale, String... params) throws Exception{
+	public static String errorComponentLogic(String lblName, Locale locale, String... params) throws Exception {
 		InputStream is = null;
 		is = Utilities.class.getResourceAsStream("/i18n/messages_" + locale.getLanguage() + ".properties");
-		
-		String exception="";
+
+		String exception = "";
 		Properties p = new Properties();
 		p.load(is);
 		exception = p.getProperty(lblName);
-		
-		if (exception!=null && params!=null && params.length>0) {
-			for(int i=0;i<params.length; i++) {
-				exception = exception.replaceAll("\\$"+(i+1), params[i]);
+
+		if (exception != null && params != null && params.length > 0) {
+			for (int i = 0; i < params.length; i++) {
+				exception = exception.replaceAll("\\$" + (i + 1), params[i]);
 			}
 		}
-		
+
 		return exception;
 	}
-	
+
 	public static String generarToken() throws NoSuchAlgorithmException {
-		String token = UUID.randomUUID().toString();		
+		String token = UUID.randomUUID().toString();
 		return token;
 	}
-	
+
 	/**
 	 * Retorna una fecha inicial con horas, minutos y segundos: 00:00:00
 	 * 
@@ -457,10 +437,10 @@ public class Utilities {
 		calendar.set(Calendar.HOUR, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
-		
+
 		return calendar.getTime();
 	}
-	
+
 	/**
 	 * Retorna una fecha final con horas, minutos y segundos: 23:59:59
 	 * 
@@ -476,7 +456,7 @@ public class Utilities {
 		calendar.set(Calendar.HOUR, 23);
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
-		
+
 		return calendar.getTime();
 	}
 
@@ -493,18 +473,17 @@ public class Utilities {
 	 */
 	public static double redondear(double numero, int decimales) {
 		boolean negativo = false;
-		if(numero<0){
-			numero *=-1;
+		if (numero < 0) {
+			numero *= -1;
 			negativo = true;
 		}
-		double redondeado = Math.round(numero * Math.pow(10, decimales))
-                / Math.pow(10, decimales);
-        return negativo ? redondeado*-1 : redondeado;
-    }
+		double redondeado = Math.round(numero * Math.pow(10, decimales)) / Math.pow(10, decimales);
+		return negativo ? redondeado * -1 : redondeado;
+	}
 
 	/**
-	 * Función para obtener el número que sea múltiplo de "multiploDe"
-	 * y mayor que "mayorQue"
+	 * Función para obtener el número que sea múltiplo de "multiploDe" y mayor que
+	 * "mayorQue"
 	 *
 	 * @author Camilo Delgado
 	 * @version Mar 24, 2018
@@ -520,5 +499,5 @@ public class Utilities {
 		Integer numeroSiguiente = division.intValue() * multiploDe;
 		return numeroSiguiente;
 	}
-	
+
 }

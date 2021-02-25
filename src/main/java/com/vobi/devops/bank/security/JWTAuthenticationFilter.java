@@ -1,10 +1,10 @@
 package com.vobi.devops.bank.security;
 
-import static  com.vobi.devops.bank.security.Constants.HEADER_AUTHORIZACION_KEY;
-import static  com.vobi.devops.bank.security.Constants.ISSUER_INFO;
-import static  com.vobi.devops.bank.security.Constants.SUPER_SECRET_KEY;
-import static  com.vobi.devops.bank.security.Constants.TOKEN_BEARER_PREFIX;
-import static  com.vobi.devops.bank.security.Constants.TOKEN_EXPIRATION_TIME;
+import static com.vobi.devops.bank.security.Constants.HEADER_AUTHORIZACION_KEY;
+import static com.vobi.devops.bank.security.Constants.ISSUER_INFO;
+import static com.vobi.devops.bank.security.Constants.SUPER_SECRET_KEY;
+import static com.vobi.devops.bank.security.Constants.TOKEN_BEARER_PREFIX;
+import static com.vobi.devops.bank.security.Constants.TOKEN_EXPIRATION_TIME;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,10 +31,10 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 /**
-* @author Zathura Code Generator Version 9.0 http://zathuracode.org/
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator Version 9.0 http://zathuracode.org/
+ *         www.zathuracode.org
+ *
+ */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
@@ -44,11 +44,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)throws AuthenticationException {
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException {
 		try {
-			UserApplication credenciales = new ObjectMapper().readValue(request.getInputStream(), UserApplication.class);
+			UserApplication credenciales = new ObjectMapper().readValue(request.getInputStream(),
+					UserApplication.class);
 
-			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credenciales.getUsername(), credenciales.getPassword(), new ArrayList<>()));
+			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					credenciales.getUsername(), credenciales.getPassword(), new ArrayList<>()));
 
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -56,21 +59,19 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	}
 
 	@Override
-	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,Authentication auth) throws IOException, ServletException {
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication auth) throws IOException, ServletException {
 
 		SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SUPER_SECRET_KEY));
 
-		String token = Jwts.builder()
-				.setIssuedAt(new Date()).setIssuer(ISSUER_INFO)
+		String token = Jwts.builder().setIssuedAt(new Date()).setIssuer(ISSUER_INFO)
 				.setSubject(((User) auth.getPrincipal()).getUsername())
-				.setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_TIME))
-				.signWith(key)
-				.compact();
+				.setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION_TIME)).signWith(key).compact();
 
-		//Se registra el token en el body
+		// Se registra el token en el body
 		response.setContentType("application/json");
-		response.getWriter().write("{\"token\":"+"\""+TOKEN_BEARER_PREFIX + token+"\"}");
-		//Se registra el token en el Header
+		response.getWriter().write("{\"token\":" + "\"" + TOKEN_BEARER_PREFIX + token + "\"}");
+		// Se registra el token en el Header
 		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + token);
 		response.getWriter().flush();
 
