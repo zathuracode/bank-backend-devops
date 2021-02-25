@@ -20,10 +20,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
-		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
+		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<io.springfox.version>3.0.0</io.springfox.version>
 		<org.apache.commons.collections4>4.4</org.apache.commons.collections4>
-		<org.projectlombok.version>1.18.16</org.projectlombok.version>
+		<org.projectlombok.version>1.18.18</org.projectlombok.version>
 		<io.jsonwebtoken.version>0.11.2</io.jsonwebtoken.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 		<org.jacoco.maven.plugin.version>0.8.6</org.jacoco.maven.plugin.version>
@@ -174,7 +174,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<artifactId>spring-boot-maven-plugin</artifactId>				
 			</plugin>
 
 			<plugin>
