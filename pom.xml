@@ -30,6 +30,8 @@
 		<org.openclover.clover.maven.plugin.version>4.4.1</org.openclover.clover.maven.plugin.version>
 		<org.pitest.maven.version>1.6.3</org.pitest.maven.version>
 		<org.pitest.junit5.plugin.version>0.12</org.pitest.junit5.plugin.version>
+		<sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
+		<properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
 		<!-- Por defecto, solo teste unitarios seran ejecutados. -->
         <skip.integration.tests>true</skip.integration.tests>
         <skip.unit.tests>false</skip.unit.tests>
@@ -323,8 +325,31 @@
 	                </targetTests>
 	            </configuration>	
 	        </plugin>
-			
-
+	        
+	         <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-maven-plugin.version}</version>
+             </plugin>
+             
+             <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>${properties-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>read-project-properties</goal>
+                            </goals>
+                            <configuration>
+                                <files>
+                                    <file>sonar-project.properties</file>
+                                </files>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
 		</plugins>
 	</build>
 
