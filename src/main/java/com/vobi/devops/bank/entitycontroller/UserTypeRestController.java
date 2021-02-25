@@ -1,10 +1,16 @@
 package com.vobi.devops.bank.entitycontroller;
 
-import javax.validation.Valid;
+import com.vobi.devops.bank.domain.*;
+import com.vobi.devops.bank.dto.UserTypeDTO;
+import com.vobi.devops.bank.entityservice.UserTypeService;
+import com.vobi.devops.bank.mapper.UserTypeMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,77 +20,88 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vobi.devops.bank.domain.UserType;
-import com.vobi.devops.bank.dto.UserTypeDTO;
-import com.vobi.devops.bank.entityservice.UserTypeService;
-import com.vobi.devops.bank.mapper.UserTypeMapper;
+import java.util.Optional;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.validation.Valid;
+
 
 /**
- * @author Zathura Code Generator Version 9.0 http://zathuracode.org/
- *         www.zathuracode.org
- *
- */
+* @author Zathura Code Generator Version 9.0 http://zathuracode.org/
+* www.zathuracode.org
+*
+*/
 @RestController
 @RequestMapping("/api/v1/userType")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class UserTypeRestController {
-	@Autowired
-	private UserTypeService userTypeService;
-	@Autowired
-	private UserTypeMapper userTypeMapper;
+    @Autowired
+    private UserTypeService userTypeService;
+    @Autowired
+    private UserTypeMapper userTypeMapper;
 
-	@GetMapping(value = "/{ustyId}")
-	public ResponseEntity<?> findById(@PathVariable("ustyId") Integer ustyId) throws Exception {
-		log.debug("Request to findById() UserType");
+    @GetMapping(value = "/{ustyId}")
+    public ResponseEntity<?> findById(@PathVariable("ustyId")
+    Integer ustyId) throws Exception {
+        log.debug("Request to findById() UserType");
 
-		UserType userType = (userTypeService.findById(ustyId).isPresent() == true)
-				? userTypeService.findById(ustyId).get()
-				: null;
+        Optional<UserType> optional = userTypeService.findById(ustyId);
 
-		return ResponseEntity.ok().body(userTypeMapper.userTypeToUserTypeDTO(userType));
-	}
+        UserType userType = (optional.isPresent() == true) ? optional.get() : null;
 
-	@GetMapping()
-	public ResponseEntity<?> findAll() throws Exception {
-		log.debug("Request to findAll() UserType");
+        return ResponseEntity.ok()
+                             .body(userTypeMapper.userTypeToUserTypeDTO(
+                userType));
+    }
 
-		return ResponseEntity.ok().body(userTypeMapper.listUserTypeToListUserTypeDTO(userTypeService.findAll()));
-	}
+    @GetMapping()
+    public ResponseEntity<?> findAll() throws Exception {
+        log.debug("Request to findAll() UserType");
 
-	@PostMapping()
-	public ResponseEntity<?> save(@Valid @RequestBody UserTypeDTO userTypeDTO) throws Exception {
-		log.debug("Request to save UserType: {}", userTypeDTO);
+        return ResponseEntity.ok()
+                             .body(userTypeMapper.listUserTypeToListUserTypeDTO(
+                userTypeService.findAll()));
+    }
 
-		UserType userType = userTypeMapper.userTypeDTOToUserType(userTypeDTO);
-		userType = userTypeService.save(userType);
+    @PostMapping()
+    public ResponseEntity<?> save(@Valid
+    @RequestBody
+    UserTypeDTO userTypeDTO) throws Exception {
+        log.debug("Request to save UserType: {}", userTypeDTO);
 
-		return ResponseEntity.ok().body(userTypeMapper.userTypeToUserTypeDTO(userType));
-	}
+        UserType userType = userTypeMapper.userTypeDTOToUserType(userTypeDTO);
+        userType = userTypeService.save(userType);
 
-	@PutMapping()
-	public ResponseEntity<?> update(@Valid @RequestBody UserTypeDTO userTypeDTO) throws Exception {
-		log.debug("Request to update UserType: {}", userTypeDTO);
+        return ResponseEntity.ok()
+                             .body(userTypeMapper.userTypeToUserTypeDTO(
+                userType));
+    }
 
-		UserType userType = userTypeMapper.userTypeDTOToUserType(userTypeDTO);
-		userType = userTypeService.update(userType);
+    @PutMapping()
+    public ResponseEntity<?> update(@Valid
+    @RequestBody
+    UserTypeDTO userTypeDTO) throws Exception {
+        log.debug("Request to update UserType: {}", userTypeDTO);
 
-		return ResponseEntity.ok().body(userTypeMapper.userTypeToUserTypeDTO(userType));
-	}
+        UserType userType = userTypeMapper.userTypeDTOToUserType(userTypeDTO);
+        userType = userTypeService.update(userType);
 
-	@DeleteMapping(value = "/{ustyId}")
-	public ResponseEntity<?> delete(@PathVariable("ustyId") Integer ustyId) throws Exception {
-		log.debug("Request to delete UserType");
+        return ResponseEntity.ok()
+                             .body(userTypeMapper.userTypeToUserTypeDTO(
+                userType));
+    }
 
-		userTypeService.deleteById(ustyId);
+    @DeleteMapping(value = "/{ustyId}")
+    public ResponseEntity<?> delete(@PathVariable("ustyId")
+    Integer ustyId) throws Exception {
+        log.debug("Request to delete UserType");
 
-		return ResponseEntity.ok().build();
-	}
+        userTypeService.deleteById(ustyId);
 
-	@GetMapping(value = "/count")
-	public ResponseEntity<?> count() {
-		return ResponseEntity.ok().body(userTypeService.count());
-	}
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/count")
+    public ResponseEntity<?> count() {
+        return ResponseEntity.ok().body(userTypeService.count());
+    }
 }

@@ -1,10 +1,16 @@
 package com.vobi.devops.bank.entitycontroller;
 
-import javax.validation.Valid;
+import com.vobi.devops.bank.domain.*;
+import com.vobi.devops.bank.dto.RegisteredAccountDTO;
+import com.vobi.devops.bank.entityservice.RegisteredAccountService;
+import com.vobi.devops.bank.mapper.RegisteredAccountMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,83 +20,92 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vobi.devops.bank.domain.RegisteredAccount;
-import com.vobi.devops.bank.dto.RegisteredAccountDTO;
-import com.vobi.devops.bank.entityservice.RegisteredAccountService;
-import com.vobi.devops.bank.mapper.RegisteredAccountMapper;
+import java.util.Optional;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.validation.Valid;
+
 
 /**
- * @author Zathura Code Generator Version 9.0 http://zathuracode.org/
- *         www.zathuracode.org
- *
- */
+* @author Zathura Code Generator Version 9.0 http://zathuracode.org/
+* www.zathuracode.org
+*
+*/
 @RestController
 @RequestMapping("/api/v1/registeredAccount")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class RegisteredAccountRestController {
-	@Autowired
-	private RegisteredAccountService registeredAccountService;
-	@Autowired
-	private RegisteredAccountMapper registeredAccountMapper;
+    @Autowired
+    private RegisteredAccountService registeredAccountService;
+    @Autowired
+    private RegisteredAccountMapper registeredAccountMapper;
 
-	@GetMapping(value = "/{reacId}")
-	public ResponseEntity<?> findById(@PathVariable("reacId") Integer reacId) throws Exception {
-		log.debug("Request to findById() RegisteredAccount");
+    @GetMapping(value = "/{reacId}")
+    public ResponseEntity<?> findById(@PathVariable("reacId")
+    Integer reacId) throws Exception {
+        log.debug("Request to findById() RegisteredAccount");
 
-		RegisteredAccount registeredAccount = (registeredAccountService.findById(reacId).isPresent() == true)
-				? registeredAccountService.findById(reacId).get()
-				: null;
+        Optional<RegisteredAccount> optional = registeredAccountService.findById(reacId);
 
-		return ResponseEntity.ok()
-				.body(registeredAccountMapper.registeredAccountToRegisteredAccountDTO(registeredAccount));
-	}
+        RegisteredAccount registeredAccount = (optional.isPresent() == true)
+            ? optional.get() : null;
 
-	@GetMapping()
-	public ResponseEntity<?> findAll() throws Exception {
-		log.debug("Request to findAll() RegisteredAccount");
+        return ResponseEntity.ok()
+                             .body(registeredAccountMapper.registeredAccountToRegisteredAccountDTO(
+                registeredAccount));
+    }
 
-		return ResponseEntity.ok().body(registeredAccountMapper
-				.listRegisteredAccountToListRegisteredAccountDTO(registeredAccountService.findAll()));
-	}
+    @GetMapping()
+    public ResponseEntity<?> findAll() throws Exception {
+        log.debug("Request to findAll() RegisteredAccount");
 
-	@PostMapping()
-	public ResponseEntity<?> save(@Valid @RequestBody RegisteredAccountDTO registeredAccountDTO) throws Exception {
-		log.debug("Request to save RegisteredAccount: {}", registeredAccountDTO);
+        return ResponseEntity.ok()
+                             .body(registeredAccountMapper.listRegisteredAccountToListRegisteredAccountDTO(
+                registeredAccountService.findAll()));
+    }
 
-		RegisteredAccount registeredAccount = registeredAccountMapper
-				.registeredAccountDTOToRegisteredAccount(registeredAccountDTO);
-		registeredAccount = registeredAccountService.save(registeredAccount);
+    @PostMapping()
+    public ResponseEntity<?> save(
+        @Valid
+    @RequestBody
+    RegisteredAccountDTO registeredAccountDTO) throws Exception {
+        log.debug("Request to save RegisteredAccount: {}", registeredAccountDTO);
 
-		return ResponseEntity.ok()
-				.body(registeredAccountMapper.registeredAccountToRegisteredAccountDTO(registeredAccount));
-	}
+        RegisteredAccount registeredAccount = registeredAccountMapper.registeredAccountDTOToRegisteredAccount(registeredAccountDTO);
+        registeredAccount = registeredAccountService.save(registeredAccount);
 
-	@PutMapping()
-	public ResponseEntity<?> update(@Valid @RequestBody RegisteredAccountDTO registeredAccountDTO) throws Exception {
-		log.debug("Request to update RegisteredAccount: {}", registeredAccountDTO);
+        return ResponseEntity.ok()
+                             .body(registeredAccountMapper.registeredAccountToRegisteredAccountDTO(
+                registeredAccount));
+    }
 
-		RegisteredAccount registeredAccount = registeredAccountMapper
-				.registeredAccountDTOToRegisteredAccount(registeredAccountDTO);
-		registeredAccount = registeredAccountService.update(registeredAccount);
+    @PutMapping()
+    public ResponseEntity<?> update(
+        @Valid
+    @RequestBody
+    RegisteredAccountDTO registeredAccountDTO) throws Exception {
+        log.debug("Request to update RegisteredAccount: {}",
+            registeredAccountDTO);
 
-		return ResponseEntity.ok()
-				.body(registeredAccountMapper.registeredAccountToRegisteredAccountDTO(registeredAccount));
-	}
+        RegisteredAccount registeredAccount = registeredAccountMapper.registeredAccountDTOToRegisteredAccount(registeredAccountDTO);
+        registeredAccount = registeredAccountService.update(registeredAccount);
 
-	@DeleteMapping(value = "/{reacId}")
-	public ResponseEntity<?> delete(@PathVariable("reacId") Integer reacId) throws Exception {
-		log.debug("Request to delete RegisteredAccount");
+        return ResponseEntity.ok()
+                             .body(registeredAccountMapper.registeredAccountToRegisteredAccountDTO(
+                registeredAccount));
+    }
 
-		registeredAccountService.deleteById(reacId);
+    @DeleteMapping(value = "/{reacId}")
+    public ResponseEntity<?> delete(@PathVariable("reacId")
+    Integer reacId) throws Exception {
+        log.debug("Request to delete RegisteredAccount");
 
-		return ResponseEntity.ok().build();
-	}
+        registeredAccountService.deleteById(reacId);
 
-	@GetMapping(value = "/count")
-	public ResponseEntity<?> count() {
-		return ResponseEntity.ok().body(registeredAccountService.count());
-	}
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/count")
+    public ResponseEntity<?> count() {
+        return ResponseEntity.ok().body(registeredAccountService.count());
+    }
 }

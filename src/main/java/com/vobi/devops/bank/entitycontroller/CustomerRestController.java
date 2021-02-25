@@ -1,10 +1,16 @@
 package com.vobi.devops.bank.entitycontroller;
 
-import javax.validation.Valid;
+import com.vobi.devops.bank.domain.*;
+import com.vobi.devops.bank.dto.CustomerDTO;
+import com.vobi.devops.bank.entityservice.CustomerService;
+import com.vobi.devops.bank.mapper.CustomerMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,77 +20,88 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vobi.devops.bank.domain.Customer;
-import com.vobi.devops.bank.dto.CustomerDTO;
-import com.vobi.devops.bank.entityservice.CustomerService;
-import com.vobi.devops.bank.mapper.CustomerMapper;
+import java.util.Optional;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.validation.Valid;
+
 
 /**
- * @author Zathura Code Generator Version 9.0 http://zathuracode.org/
- *         www.zathuracode.org
- *
- */
+* @author Zathura Code Generator Version 9.0 http://zathuracode.org/
+* www.zathuracode.org
+*
+*/
 @RestController
 @RequestMapping("/api/v1/customer")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class CustomerRestController {
-	@Autowired
-	private CustomerService customerService;
-	@Autowired
-	private CustomerMapper customerMapper;
+    @Autowired
+    private CustomerService customerService;
+    @Autowired
+    private CustomerMapper customerMapper;
 
-	@GetMapping(value = "/{custId}")
-	public ResponseEntity<?> findById(@PathVariable("custId") Integer custId) throws Exception {
-		log.debug("Request to findById() Customer");
+    @GetMapping(value = "/{custId}")
+    public ResponseEntity<?> findById(@PathVariable("custId")
+    Integer custId) throws Exception {
+        log.debug("Request to findById() Customer");
 
-		Customer customer = (customerService.findById(custId).isPresent() == true)
-				? customerService.findById(custId).get()
-				: null;
+        Optional<Customer> optional = customerService.findById(custId);
 
-		return ResponseEntity.ok().body(customerMapper.customerToCustomerDTO(customer));
-	}
+        Customer customer = (optional.isPresent() == true) ? optional.get() : null;
 
-	@GetMapping()
-	public ResponseEntity<?> findAll() throws Exception {
-		log.debug("Request to findAll() Customer");
+        return ResponseEntity.ok()
+                             .body(customerMapper.customerToCustomerDTO(
+                customer));
+    }
 
-		return ResponseEntity.ok().body(customerMapper.listCustomerToListCustomerDTO(customerService.findAll()));
-	}
+    @GetMapping()
+    public ResponseEntity<?> findAll() throws Exception {
+        log.debug("Request to findAll() Customer");
 
-	@PostMapping()
-	public ResponseEntity<?> save(@Valid @RequestBody CustomerDTO customerDTO) throws Exception {
-		log.debug("Request to save Customer: {}", customerDTO);
+        return ResponseEntity.ok()
+                             .body(customerMapper.listCustomerToListCustomerDTO(
+                customerService.findAll()));
+    }
 
-		Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
-		customer = customerService.save(customer);
+    @PostMapping()
+    public ResponseEntity<?> save(@Valid
+    @RequestBody
+    CustomerDTO customerDTO) throws Exception {
+        log.debug("Request to save Customer: {}", customerDTO);
 
-		return ResponseEntity.ok().body(customerMapper.customerToCustomerDTO(customer));
-	}
+        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
+        customer = customerService.save(customer);
 
-	@PutMapping()
-	public ResponseEntity<?> update(@Valid @RequestBody CustomerDTO customerDTO) throws Exception {
-		log.debug("Request to update Customer: {}", customerDTO);
+        return ResponseEntity.ok()
+                             .body(customerMapper.customerToCustomerDTO(
+                customer));
+    }
 
-		Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
-		customer = customerService.update(customer);
+    @PutMapping()
+    public ResponseEntity<?> update(@Valid
+    @RequestBody
+    CustomerDTO customerDTO) throws Exception {
+        log.debug("Request to update Customer: {}", customerDTO);
 
-		return ResponseEntity.ok().body(customerMapper.customerToCustomerDTO(customer));
-	}
+        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
+        customer = customerService.update(customer);
 
-	@DeleteMapping(value = "/{custId}")
-	public ResponseEntity<?> delete(@PathVariable("custId") Integer custId) throws Exception {
-		log.debug("Request to delete Customer");
+        return ResponseEntity.ok()
+                             .body(customerMapper.customerToCustomerDTO(
+                customer));
+    }
 
-		customerService.deleteById(custId);
+    @DeleteMapping(value = "/{custId}")
+    public ResponseEntity<?> delete(@PathVariable("custId")
+    Integer custId) throws Exception {
+        log.debug("Request to delete Customer");
 
-		return ResponseEntity.ok().build();
-	}
+        customerService.deleteById(custId);
 
-	@GetMapping(value = "/count")
-	public ResponseEntity<?> count() {
-		return ResponseEntity.ok().body(customerService.count());
-	}
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/count")
+    public ResponseEntity<?> count() {
+        return ResponseEntity.ok().body(customerService.count());
+    }
 }
