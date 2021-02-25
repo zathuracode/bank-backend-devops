@@ -52,7 +52,8 @@ class BankTransactionControllerTest {
 		when(bankTransactionService.deposit(any(DepositDTO.class))).thenReturn(transactionResultDTO);
 
 		mvcResult = mockMvc
-				.perform(post("/api/v1/transactions/deposit").contentType("application/json").content(jsonDepositDTO))
+				.perform(post("/api/v1/transactions/deposit")
+						.contentType("application/json").content(jsonDepositDTO))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.balance").value(85000.0)).andReturn();
 
 		assertEquals("application/json", mvcResult.getResponse().getContentType());
