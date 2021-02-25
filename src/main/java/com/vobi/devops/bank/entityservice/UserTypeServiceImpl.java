@@ -117,8 +117,9 @@ public class UserTypeServiceImpl implements UserTypeService {
 		if (id == null) {
 			throw new ZMessManager().new EmptyFieldException("ustyId");
 		}
-		if (userTypeRepository.existsById(id)) {
-			delete(userTypeRepository.findById(id).get());
+		Optional<UserType> optionalUserType = userTypeRepository.findById(id);
+		if (optionalUserType.isPresent()) {
+			delete(optionalUserType.get());
 		}
 	}
 

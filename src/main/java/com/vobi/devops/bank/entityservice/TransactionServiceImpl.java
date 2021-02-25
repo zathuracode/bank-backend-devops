@@ -105,8 +105,10 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new ZMessManager().new EmptyFieldException("tranId");
 		}
 
-		if (transactionRepository.existsById(id)) {
-			delete(transactionRepository.findById(id).get());
+		Optional<Transaction> optionalTransaction = transactionRepository.findById(id);
+
+		if (optionalTransaction.isPresent()) {
+			delete(optionalTransaction.get());
 		}
 	}
 

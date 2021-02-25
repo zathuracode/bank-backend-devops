@@ -1,16 +1,11 @@
 package com.vobi.devops.bank.entitycontroller;
 
-import com.vobi.devops.bank.domain.*;
-import com.vobi.devops.bank.dto.UsersDTO;
-import com.vobi.devops.bank.entityservice.UsersService;
-import com.vobi.devops.bank.mapper.UsersMapper;
+import java.util.Optional;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,83 +15,76 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
+import com.vobi.devops.bank.domain.Users;
+import com.vobi.devops.bank.dto.UsersDTO;
+import com.vobi.devops.bank.entityservice.UsersService;
+import com.vobi.devops.bank.mapper.UsersMapper;
 
-import javax.validation.Valid;
-
+import lombok.extern.slf4j.Slf4j;
 
 /**
-* @author Zathura Code Generator Version 9.0 http://zathuracode.org/
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator Version 9.0 http://zathuracode.org/
+ *         www.zathuracode.org
+ *
+ */
 @RestController
 @RequestMapping("/api/v1/users")
 @Slf4j
 public class UsersRestController {
-    @Autowired
-    private UsersService usersService;
-    @Autowired
-    private UsersMapper usersMapper;
+	@Autowired
+	private UsersService usersService;
+	@Autowired
+	private UsersMapper usersMapper;
 
-    @GetMapping(value = "/{userEmail}")
-    public ResponseEntity<?> findById(
-        @PathVariable("userEmail")
-    String userEmail) throws Exception {
-        log.debug("Request to findById() Users");
+	@GetMapping(value = "/{userEmail}")
+	public ResponseEntity<?> findById(@PathVariable("userEmail") String userEmail) throws Exception {
+		log.debug("Request to findById() Users");
 
-        Optional<Users> optional = usersService.findById(userEmail);
+		Optional<Users> optionalUsers = usersService.findById(userEmail);
 
-        Users users = (optional.isPresent() == true) ? optional.get() : null;
+		Users users = (optionalUsers.isPresent() == true) ? optionalUsers.get() : null;
 
-        return ResponseEntity.ok().body(usersMapper.usersToUsersDTO(users));
-    }
+		return ResponseEntity.ok().body(usersMapper.usersToUsersDTO(users));
+	}
 
-    @GetMapping()
-    public ResponseEntity<?> findAll() throws Exception {
-        log.debug("Request to findAll() Users");
+	@GetMapping()
+	public ResponseEntity<?> findAll() throws Exception {
+		log.debug("Request to findAll() Users");
 
-        return ResponseEntity.ok()
-                             .body(usersMapper.listUsersToListUsersDTO(
-                usersService.findAll()));
-    }
+		return ResponseEntity.ok().body(usersMapper.listUsersToListUsersDTO(usersService.findAll()));
+	}
 
-    @PostMapping()
-    public ResponseEntity<?> save(@Valid
-    @RequestBody
-    UsersDTO usersDTO) throws Exception {
-        log.debug("Request to save Users: {}", usersDTO);
+	@PostMapping()
+	public ResponseEntity<?> save(@Valid @RequestBody UsersDTO usersDTO) throws Exception {
+		log.debug("Request to save Users: {}", usersDTO);
 
-        Users users = usersMapper.usersDTOToUsers(usersDTO);
-        users = usersService.save(users);
+		Users users = usersMapper.usersDTOToUsers(usersDTO);
+		users = usersService.save(users);
 
-        return ResponseEntity.ok().body(usersMapper.usersToUsersDTO(users));
-    }
+		return ResponseEntity.ok().body(usersMapper.usersToUsersDTO(users));
+	}
 
-    @PutMapping()
-    public ResponseEntity<?> update(@Valid
-    @RequestBody
-    UsersDTO usersDTO) throws Exception {
-        log.debug("Request to update Users: {}", usersDTO);
+	@PutMapping()
+	public ResponseEntity<?> update(@Valid @RequestBody UsersDTO usersDTO) throws Exception {
+		log.debug("Request to update Users: {}", usersDTO);
 
-        Users users = usersMapper.usersDTOToUsers(usersDTO);
-        users = usersService.update(users);
+		Users users = usersMapper.usersDTOToUsers(usersDTO);
+		users = usersService.update(users);
 
-        return ResponseEntity.ok().body(usersMapper.usersToUsersDTO(users));
-    }
+		return ResponseEntity.ok().body(usersMapper.usersToUsersDTO(users));
+	}
 
-    @DeleteMapping(value = "/{userEmail}")
-    public ResponseEntity<?> delete(@PathVariable("userEmail")
-    String userEmail) throws Exception {
-        log.debug("Request to delete Users");
+	@DeleteMapping(value = "/{userEmail}")
+	public ResponseEntity<?> delete(@PathVariable("userEmail") String userEmail) throws Exception {
+		log.debug("Request to delete Users");
 
-        usersService.deleteById(userEmail);
+		usersService.deleteById(userEmail);
 
-        return ResponseEntity.ok().build();
-    }
+		return ResponseEntity.ok().build();
+	}
 
-    @GetMapping(value = "/count")
-    public ResponseEntity<?> count() {
-        return ResponseEntity.ok().body(usersService.count());
-    }
+	@GetMapping(value = "/count")
+	public ResponseEntity<?> count() {
+		return ResponseEntity.ok().body(usersService.count());
+	}
 }
