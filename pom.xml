@@ -34,6 +34,7 @@
 		<properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
 		<!-- Por defecto, solo teste unitarios seran ejecutados. -->
         <skip.integration.tests>true</skip.integration.tests>
+        <skip.pitest>true</skip.pitest>
         <skip.unit.tests>false</skip.unit.tests>
         <skip.jacoco>false</skip.jacoco>
         <surefire.and.failsafe.report.dir>target/test-report</surefire.and.failsafe.report.dir>
@@ -54,6 +55,17 @@
                 <skip.integration.tests>false</skip.integration.tests>
                 <skip.unit.tests>true</skip.unit.tests>
                 <skip.jacoco>true</skip.jacoco>
+                <skip.pitest>true</skip.pitest>
+            </properties>
+        </profile>
+        
+        <profile>
+            <id>mutation-test</id>
+            <properties>
+                <skip.integration.tests>true</skip.integration.tests>
+                <skip.unit.tests>false</skip.unit.tests>
+                <skip.jacoco>false</skip.jacoco>
+                <skip.pitest>false</skip.pitest>
             </properties>
         </profile>
     </profiles>
@@ -317,6 +329,7 @@
 	
 	            <!--optional-->
 	            <configuration>
+	            	<skip>${skip.pitest}</skip>
 	                <targetClasses>
 	                    <param>com.vobi.devops.bank.service*</param>
 	                </targetClasses>
