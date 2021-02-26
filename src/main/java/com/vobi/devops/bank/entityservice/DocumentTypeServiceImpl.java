@@ -117,8 +117,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 		if (id == null) {
 			throw new ZMessManager().new EmptyFieldException("dotyId");
 		}
-		if (documentTypeRepository.existsById(id)) {
-			delete(documentTypeRepository.findById(id).get());
+		Optional<DocumentType> optionalDocumentType = documentTypeRepository.findById(id);
+		if (optionalDocumentType.isPresent()) {
+			delete(optionalDocumentType.get());
 		}
 	}
 

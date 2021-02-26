@@ -117,8 +117,9 @@ public class TransactionTypeServiceImpl implements TransactionTypeService {
 		if (id == null) {
 			throw new ZMessManager().new EmptyFieldException("trtyId");
 		}
-		if (transactionTypeRepository.existsById(id)) {
-			delete(transactionTypeRepository.findById(id).get());
+		Optional<TransactionType> optionalTransactionType = transactionTypeRepository.findById(id);
+		if (optionalTransactionType.isPresent()) {
+			delete(optionalTransactionType.get());
 		}
 	}
 

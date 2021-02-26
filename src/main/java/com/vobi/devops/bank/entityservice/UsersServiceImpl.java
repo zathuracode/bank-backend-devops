@@ -117,8 +117,9 @@ public class UsersServiceImpl implements UsersService {
 		if (id == null) {
 			throw new ZMessManager().new EmptyFieldException("userEmail");
 		}
-		if (usersRepository.existsById(id)) {
-			delete(usersRepository.findById(id).get());
+		Optional<Users> optionalUsers = usersRepository.findById(id);
+		if (optionalUsers.isPresent()) {
+			delete(optionalUsers.get());
 		}
 	}
 

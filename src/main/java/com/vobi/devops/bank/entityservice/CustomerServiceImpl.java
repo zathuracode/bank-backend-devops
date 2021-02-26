@@ -122,8 +122,9 @@ public class CustomerServiceImpl implements CustomerService {
 		if (id == null) {
 			throw new ZMessManager().new EmptyFieldException("custId");
 		}
-		if (customerRepository.existsById(id)) {
-			delete(customerRepository.findById(id).get());
+		Optional<Customer> optionalCustomer = customerRepository.findById(id);
+		if (optionalCustomer.isPresent()) {
+			delete(optionalCustomer.get());
 		}
 	}
 

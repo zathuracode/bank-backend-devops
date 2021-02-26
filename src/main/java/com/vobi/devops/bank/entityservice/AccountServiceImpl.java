@@ -122,8 +122,9 @@ public class AccountServiceImpl implements AccountService {
 		if (id == null) {
 			throw new ZMessManager().new EmptyFieldException("accoId");
 		}
-		if (accountRepository.existsById(id)) {
-			delete(accountRepository.findById(id).get());
+		Optional<Account> optionalAccount = accountRepository.findById(id);
+		if (optionalAccount.isPresent()) {
+			delete(optionalAccount.get());
 		}
 	}
 

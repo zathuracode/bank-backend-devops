@@ -105,8 +105,10 @@ public class RegisteredAccountServiceImpl implements RegisteredAccountService {
 			throw new ZMessManager().new EmptyFieldException("reacId");
 		}
 
-		if (registeredAccountRepository.existsById(id)) {
-			delete(registeredAccountRepository.findById(id).get());
+		Optional<RegisteredAccount> optionalRegisteredAccount = registeredAccountRepository.findById(id);
+
+		if (optionalRegisteredAccount.isPresent()) {
+			delete(optionalRegisteredAccount.get());
 		}
 	}
 

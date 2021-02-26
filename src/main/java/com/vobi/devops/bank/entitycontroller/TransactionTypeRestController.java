@@ -1,10 +1,11 @@
 package com.vobi.devops.bank.entitycontroller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @RequestMapping("/api/v1/transactionType")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class TransactionTypeRestController {
 	@Autowired
@@ -40,8 +40,9 @@ public class TransactionTypeRestController {
 	public ResponseEntity<?> findById(@PathVariable("trtyId") Integer trtyId) throws Exception {
 		log.debug("Request to findById() TransactionType");
 
-		TransactionType transactionType = (transactionTypeService.findById(trtyId).isPresent() == true)
-				? transactionTypeService.findById(trtyId).get()
+		Optional<TransactionType> optionalTransactionType = transactionTypeService.findById(trtyId);
+
+		TransactionType transactionType = (optionalTransactionType.isPresent() == true) ? optionalTransactionType.get()
 				: null;
 
 		return ResponseEntity.ok().body(transactionTypeMapper.transactionTypeToTransactionTypeDTO(transactionType));

@@ -1,10 +1,11 @@
 package com.vobi.devops.bank.entitycontroller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @RequestMapping("/api/v1/documentType")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class DocumentTypeRestController {
 	@Autowired
@@ -40,9 +40,9 @@ public class DocumentTypeRestController {
 	public ResponseEntity<?> findById(@PathVariable("dotyId") Integer dotyId) throws Exception {
 		log.debug("Request to findById() DocumentType");
 
-		DocumentType documentType = (documentTypeService.findById(dotyId).isPresent() == true)
-				? documentTypeService.findById(dotyId).get()
-				: null;
+		Optional<DocumentType> optionalDocumentType = documentTypeService.findById(dotyId);
+
+		DocumentType documentType = (optionalDocumentType.isPresent() == true) ? optionalDocumentType.get() : null;
 
 		return ResponseEntity.ok().body(documentTypeMapper.documentTypeToDocumentTypeDTO(documentType));
 	}

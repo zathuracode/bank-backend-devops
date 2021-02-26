@@ -1,10 +1,11 @@
 package com.vobi.devops.bank.entitycontroller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @RequestMapping("/api/v1/account")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class AccountRestController {
 	@Autowired
@@ -40,8 +40,9 @@ public class AccountRestController {
 	public ResponseEntity<?> findById(@PathVariable("accoId") String accoId) throws Exception {
 		log.debug("Request to findById() Account");
 
-		Account account = (accountService.findById(accoId).isPresent() == true) ? accountService.findById(accoId).get()
-				: null;
+		Optional<Account> optionalAccount = accountService.findById(accoId);
+
+		Account account = (optionalAccount.isPresent() == true) ? optionalAccount.get() : null;
 
 		return ResponseEntity.ok().body(accountMapper.accountToAccountDTO(account));
 	}

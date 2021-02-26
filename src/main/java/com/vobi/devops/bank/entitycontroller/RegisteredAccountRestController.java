@@ -1,10 +1,11 @@
 package com.vobi.devops.bank.entitycontroller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @RequestMapping("/api/v1/registeredAccount")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class RegisteredAccountRestController {
 	@Autowired
@@ -40,8 +40,10 @@ public class RegisteredAccountRestController {
 	public ResponseEntity<?> findById(@PathVariable("reacId") Integer reacId) throws Exception {
 		log.debug("Request to findById() RegisteredAccount");
 
-		RegisteredAccount registeredAccount = (registeredAccountService.findById(reacId).isPresent() == true)
-				? registeredAccountService.findById(reacId).get()
+		Optional<RegisteredAccount> optionalRegisteredAccount = registeredAccountService.findById(reacId);
+
+		RegisteredAccount registeredAccount = (optionalRegisteredAccount.isPresent() == true)
+				? optionalRegisteredAccount.get()
 				: null;
 
 		return ResponseEntity.ok()

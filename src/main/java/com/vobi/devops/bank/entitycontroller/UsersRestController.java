@@ -1,10 +1,11 @@
 package com.vobi.devops.bank.entitycontroller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @RequestMapping("/api/v1/users")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class UsersRestController {
 	@Autowired
@@ -40,8 +40,9 @@ public class UsersRestController {
 	public ResponseEntity<?> findById(@PathVariable("userEmail") String userEmail) throws Exception {
 		log.debug("Request to findById() Users");
 
-		Users users = (usersService.findById(userEmail).isPresent() == true) ? usersService.findById(userEmail).get()
-				: null;
+		Optional<Users> optionalUsers = usersService.findById(userEmail);
+
+		Users users = (optionalUsers.isPresent() == true) ? optionalUsers.get() : null;
 
 		return ResponseEntity.ok().body(usersMapper.usersToUsersDTO(users));
 	}
