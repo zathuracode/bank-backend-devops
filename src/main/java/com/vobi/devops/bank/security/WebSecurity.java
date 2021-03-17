@@ -1,7 +1,7 @@
 package com.vobi.devops.bank.security;
 
-import static com.vobi.devops.bank.security.Constants.ACTUATOR_URL;
-import static com.vobi.devops.bank.security.Constants.LOGIN_URL;
+import static com.vobi.devops.bank.security.Constants.SECURITY_ARRAY_URLS;
+
 
 import java.util.Arrays;
 
@@ -45,8 +45,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		 * login no requiere autenticaciï¿½n 5. Se indica que el resto de URLs esten
 		 * securizadas
 		 */
+		
+		
 		httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().cors().and()
-				.csrf().disable().authorizeRequests().antMatchers(LOGIN_URL, ACTUATOR_URL).permitAll().anyRequest()
+				.csrf().disable().authorizeRequests()
+				.antMatchers(SECURITY_ARRAY_URLS).permitAll().anyRequest()
 				.authenticated().and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()));
 	}
